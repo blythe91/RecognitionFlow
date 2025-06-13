@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  <h2>Generar Certificados Por Filas</h2>
+  <h2>Generar Reconocimientos Por Filas</h2>
   <form id="specificForm" onsubmit="return false;">
     <label for="sheetUrl">URL de la Hoja de Cálculo:</label><br>
     <input type="text" id="sheetUrl" name="sheetUrl" required><br><br>
@@ -22,12 +22,12 @@
     <label for="folderUrl">URL de la Carpeta Destino:</label><br>
     <input type="text" id="folderUrl" name="folderUrl" required><br><br>
 
-    <label for="specificRows">ID de los certificados a generar (COL-A: ej. 2,4,7, máx. 30):</label><br>
+    <label for="specificRows">ID de los Reconocimientos a generar (COL-A: ej. 2,4,7, máx. 30):</label><br>
     <input type="text" id="specificRows" name="specificRows" required
            placeholder="2,4,7 (máx. 30 filas)" pattern="^\d+(,\d+)*$"
            title="Ingresa hasta 30 números separados por comas, sin espacios. Ejemplo: 2,5,9"><br><br>
 
-    <input type="button" id="generateBtn" value="Generar Certificados" onclick="iniciarGeneracionEspecifica()">
+    <input type="button" id="generateBtn" value="Generar Reconocimientos" onclick="iniciarGeneracionEspecifica()">
     <input type="button" id="stopBtn" value="Detener" onclick="detenerProceso()" disabled>
   </form>
 
@@ -63,7 +63,7 @@
       }
 
       bloquearFormulario(true);
-      logMensaje("📥 Iniciando generación de certificados por filas...");
+      logMensaje("📥 Iniciando generación de Reconocimientos por filas...");
       logMensaje("🔗 Hoja: " + sheetUrl);
       logMensaje("📄 Plantilla: " + templateUrl);
       logMensaje("📁 Carpeta: " + folderUrl);
@@ -71,17 +71,17 @@
 
       google.script.run
         .withSuccessHandler(() => {
-          logMensaje("✅ Todos los certificados por filas fueron generados satisfactoriamente.");
+          logMensaje("✅ Todos los Reconocimientos por filas fueron generados satisfactoriamente.");
           bloquearFormulario(false);
           clearInterval(intervaloProgreso);
         })
         .withFailureHandler((error) => {
-          alert("Error al generar certificados específicos: " + error.message);
+          alert("Error al generar Reconocimientos específicos: " + error.message);
           logMensaje("❌ Error: " + error.message);
           bloquearFormulario(false);
           clearInterval(intervaloProgreso);
         })
-        .procesarYGenerarCertificadosPorFilas(specificRows, sheetUrl, templateUrl, folderUrl);
+        .procesarYGenerarReconocimientosPorFilas(specificRows, sheetUrl, templateUrl, folderUrl);
 
       intervaloProgreso = setInterval(() => {
         google.script.run
@@ -92,7 +92,7 @@
           .withFailureHandler((error) => {
             logMensaje("❌ Error en seguimiento: " + error.message);
           })
-          .obtenerProgresoCertificados();
+          .obtenerProgresoReconocimientos();
       }, 10000); // cada 10 segundos
     }
 
@@ -104,12 +104,12 @@
           bloquearFormulario(false);
           clearInterval(intervaloProgreso);
         })
-        .detenerGeneracionCertificados();
+        .detenerGeneracionReconocimientos();
     }
 
     function actualizarProgreso(datos) {
       document.getElementById('statusMessage').textContent = datos.mensaje;
-      document.getElementById('certCount').textContent = `Certificados generados: ${datos.generados} / ${datos.total}`;
+      document.getElementById('certCount').textContent = `Reconocimientos generados: ${datos.generados} / ${datos.total}`;
 
       if (datos.porcentaje >= 100) {
         bloquearFormulario(false);

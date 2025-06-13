@@ -1,5 +1,5 @@
 /**
- * CertiFlow - Librería para generación y envío de certificados digitales
+ * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
  * Licencia dual:
@@ -10,21 +10,21 @@
  */
 
 /**
- * Genera certificados PDF personalizados a partir de una plantilla de Google Slides.
+ * Genera Reconocimientos PDF personalizados a partir de una plantilla de Google Slides.
  * Trabaja en lotes para no exceder límites de tiempo y guarda progreso para continuar después.
  * 
  * @param {string} sheet_Id    ID de la hoja de cálculo donde están los datos.
  * @param {string} template_Id ID de la plantilla de Google Slides.
- * @param {string} folder_Id   ID de la carpeta de Google Drive para guardar los certificados generados.
- * @param {number} batch_size  Número de certificados a generar por ejecución.
+ * @param {string} folder_Id   ID de la carpeta de Google Drive para guardar los Reconocimientos generados.
+ * @param {number} batch_size  Número de Reconocimientos a generar por ejecución.
  */
-function generarCertificados(sheet_Id, template_Id, folder_Id, batch_size) {
+function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
   try {
     const sheet = SpreadsheetApp.openById(sheet_Id).getSheetByName("data");
     const data = sheet.getDataRange().getValues();
     const folder = DriveApp.getFolderById(folder_Id);
 
-    PropertiesService.getScriptProperties().setProperty("totalCertificados", data.length - 1);
+    PropertiesService.getScriptProperties().setProperty("totalReconocimientos", data.length - 1);
 
     let lastProcessedIndex = PropertiesService.getScriptProperties().getProperty("lastProcessedIndex");
     let startIndex = lastProcessedIndex ? parseInt(lastProcessedIndex) + 1 : 1;
@@ -74,34 +74,34 @@ function generarCertificados(sheet_Id, template_Id, folder_Id, batch_size) {
 
     // Aquí se decide si continuar o finalizar
     if (endIndex < data.length) {
-      triggerGenerarCertificados(sheet_Id, template_Id, folder_Id, batch_size);
+      triggerGenerarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size);
       return; // Salimos de la función para dejar que el trigger continúe
     } else {
       eliminarTrigger();
       PropertiesService.getScriptProperties().deleteProperty("lastProcessedIndex");
-      PropertiesService.getScriptProperties().deleteProperty("totalCertificados");
+      PropertiesService.getScriptProperties().deleteProperty("totalReconocimientos");
     }
   } catch (e) {
-    Logger.log("❌ Error en generarCertificados: " + e.toString());
+    Logger.log("❌ Error en generarReconocimientos: " + e.toString());
   }
 }
 
 
 /**
- * Crea un trigger temporizado para continuar la generación de certificados en un lote posterior.
+ * Crea un trigger temporizado para continuar la generación de Reconocimientos en un lote posterior.
  * 
  * @param {string} sheet_Id
  * @param {string} template_Id
  * @param {string} folder_Id
  * @param {number} batch_size
  */
-function triggerGenerarCertificados(sheet_Id, template_Id, folder_Id, batch_size) {
+function triggerGenerarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
   // Elimina cualquier trigger anterior de esta función
   eliminarTrigger();  // Esto ya lo haces bien
 
   // Evita crear un nuevo trigger si ya hay uno agendado (doble verificación opcional)
   var triggers = ScriptApp.getProjectTriggers();
-  var existe = triggers.some(t => t.getHandlerFunction() === "continuarGeneracionCertificados");
+  var existe = triggers.some(t => t.getHandlerFunction() === "continuarGeneracionReconocimientos");
   if (existe) return;  // Ya hay uno activo, no creamos otro
 
   // Guarda parámetros
@@ -111,7 +111,7 @@ function triggerGenerarCertificados(sheet_Id, template_Id, folder_Id, batch_size
   PropertiesService.getScriptProperties().setProperty("batch_size", batch_size.toString());
 
   // Crea nuevo trigger para continuar después de 50 segundos
-  ScriptApp.newTrigger("continuarGeneracionCertificados")
+  ScriptApp.newTrigger("continuarGeneracionReconocimientos")
     .timeBased()
     .after(50000)
     .create();
@@ -119,43 +119,43 @@ function triggerGenerarCertificados(sheet_Id, template_Id, folder_Id, batch_size
 
 
 /**
- * Función disparada por el trigger para continuar la generación de certificados.
+ * Función disparada por el trigger para continuar la generación de Reconocimientos.
  * Recupera los parámetros guardados y llama a la función principal.
  */
-function continuarGeneracionCertificados() {
+function continuarGeneracionReconocimientos() {
   var sheet_Id = PropertiesService.getScriptProperties().getProperty("sheet_Id");
   var template_Id = PropertiesService.getScriptProperties().getProperty("template_Id");
   var folder_Id = PropertiesService.getScriptProperties().getProperty("folder_Id");
   var batch_size = parseInt(PropertiesService.getScriptProperties().getProperty("batch_size"));
 
   if (sheet_Id && template_Id && folder_Id && batch_size) {
-    generarCertificados(sheet_Id, template_Id, folder_Id, batch_size);
+    generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size);
   }
 }
 
 /**
- * Elimina todos los triggers asociados a la función continuarGeneracionCertificados
+ * Elimina todos los triggers asociados a la función continuarGeneracionReconocimientos
  * para evitar múltiples ejecuciones paralelas o duplicadas.
  */
 function eliminarTrigger() {
   var triggers = ScriptApp.getProjectTriggers();
   for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === "continuarGeneracionCertificados") {
+    if (triggers[i].getHandlerFunction() === "continuarGeneracionReconocimientos") {
       ScriptApp.deleteTrigger(triggers[i]);
     }
   }
 }
 
-function obtenerProgresoCertificados() {
+function obtenerProgresoReconocimientos() {
   var props = PropertiesService.getScriptProperties();
   var last = parseInt(props.getProperty("lastProcessedIndex")) || 0;
-  var total = parseInt(props.getProperty("totalCertificados")) || 0;
+  var total = parseInt(props.getProperty("totalReconocimientos")) || 0;
 
   var porcentaje = total ? Math.floor((last / total) * 100) : 0;
 
   return {
     porcentaje: porcentaje,
-    mensaje: "Generando certificados...",
+    mensaje: "Generando Reconocimientos...",
     generados: last,
     total: total
   };

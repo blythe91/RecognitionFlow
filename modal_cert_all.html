@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  <h2>Generar Todos los Certificados</h2>
+  <h2>Generar Todos los Reconocimientos</h2>
   <form id="paramForm" onsubmit="return false;">
     <label for="sheetUrl">URL de la Hoja de Cálculo:</label><br>
     <input type="text" id="sheetUrl" name="sheetUrl" required><br><br>
@@ -22,7 +22,7 @@
     <label for="folderUrl">URL de la Carpeta Destino:</label><br>
     <input type="text" id="folderUrl" name="folderUrl" required><br><br>
 
-    <input type="button" id="generateBtn" value="Generar Certificados" onclick="iniciarGeneracion()">
+    <input type="button" id="generateBtn" value="Generar Reconocimientos" onclick="iniciarGeneracion()">
     <input type="button" id="stopBtn" value="Detener" onclick="detenerProceso()" disabled>
   </form>
 
@@ -52,7 +52,7 @@
 
       bloquearFormulario(true);
 
-      logMensaje("📥 Iniciando generación de certificados...");
+      logMensaje("📥 Iniciando generación de Reconocimientos...");
       logMensaje("🔗 Hoja de cálculo: " + sheetUrl);
       logMensaje("📄 Plantilla: " + templateUrl);
       logMensaje("📁 Carpeta destino: " + folderUrl);
@@ -64,17 +64,17 @@
 
           google.script.run
             .withSuccessHandler(() => {
-              logMensaje("✅ Todos los certificados fueron generados satisfactoriamente.");
+              logMensaje("✅ Todos los Reconocimientos fueron generados satisfactoriamente.");
               bloquearFormulario(false);
               clearInterval(intervaloProgreso);
             })
             .withFailureHandler((error) => {
-              alert("Error al generar certificados: " + error.message);
+              alert("Error al generar Reconocimientos: " + error.message);
               logMensaje("❌ Error: " + error.message);
               bloquearFormulario(false);
               clearInterval(intervaloProgreso);
             })
-            .procesarYGenerarCertificados(sheetUrl, templateUrl, folderUrl, defaultBatchSize);
+            .procesarYGenerarReconocimientos(sheetUrl, templateUrl, folderUrl, defaultBatchSize);
 
           // Inicia seguimiento de progreso cada 10 segundos
           intervaloProgreso = setInterval(() => {
@@ -86,7 +86,7 @@
               .withFailureHandler((error) => {
                 logMensaje("❌ Error en seguimiento: " + error.message);
               })
-              .obtenerProgresoCertificados();
+              .obtenerProgresoReconocimientos();
           }, 10000); // cada 10 segundos
         })
         .withFailureHandler((error) => {
@@ -105,12 +105,12 @@
           bloquearFormulario(false);
           clearInterval(intervaloProgreso);
         })
-        .detenerGeneracionCertificados();
+        .detenerGeneracionReconocimientos();
     }
 
     function actualizarProgreso(datos) {
       document.getElementById('statusMessage').textContent = datos.mensaje;
-      document.getElementById('certCount').textContent = `Certificados generados: ${datos.generados} / ${datos.total}`;
+      document.getElementById('certCount').textContent = `Reconocimientos generados: ${datos.generados} / ${datos.total}`;
 
       if (datos.porcentaje >= 100) {
         bloquearFormulario(false);

@@ -1,5 +1,5 @@
 /**
- * CertiFlow - Librería para generación y envío de certificados digitales
+ * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
  * Licencia dual:
@@ -10,15 +10,15 @@
  */
 
 /**
- * Envía certificados por correo para un rango de filas dado.
+ * Envía Reconocimientos por correo para un rango de filas dado.
  *
  * @param {number} startRow     Fila inicial (1-based).
  * @param {number} endRow       Fila final (1-based).
  * @param {string} sheetId      ID de la hoja de cálculo.
- * @param {string} folderId     ID de la carpeta de certificados PDF.
+ * @param {string} folderId     ID de la carpeta de Reconocimientos PDF.
  * @param {string} mensajeEmail Texto adicional a incluir en el cuerpo del correo.
  */
-function enviarCertificadosEmailPorRango(startRow, endRow, sheetId, folderId, mensajeEmail) {
+function enviarReconocimientosEmailPorRango(startRow, endRow, sheetId, folderId, mensajeEmail) {
   try {
     Logger.log("📄 Rango: " + startRow + " a " + endRow);
     if (endRow - startRow + 1 < 5 || endRow - startRow + 1 > 30) {
@@ -77,6 +77,6 @@ function enviarCertificadosEmailPorRango(startRow, endRow, sheetId, folderId, me
     Logger.log("✅ Proceso completado para las filas del " + startRow + " al " + endRow);
 
   } catch (e) {
-    Logger.log("❌ Error en enviarCertificadosEmailPorRango: " + e.toString());
+    Logger.log("❌ Error en enviarReconocimientosEmailPorRango: " + e.toString());
   }
 }

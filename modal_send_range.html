@@ -11,12 +11,12 @@
   </style>
 </head>
 <body>
-  <h2>Enviar Certificados por Rango de Filas</h2>
+  <h2>Enviar Reconocimientos por Rango de Filas</h2>
   <form id="sendRangeForm" onsubmit="return false;">
     <label for="sheetUrl">URL de la hoja de cálculo:</label><br>
     <input type="text" id="sheetUrl" name="sheetUrl" required><br><br>
 
-    <label for="folderUrl">URL de la carpeta con los certificados:</label><br>
+    <label for="folderUrl">URL de la carpeta con los Reconocimientos:</label><br>
     <input type="text" id="folderUrl" name="folderUrl" required><br><br>
 
     <label for="mensajeEmail">Texto adicional al correo electrónico:</label><br>
@@ -28,7 +28,7 @@
     <label for="endRow">Fila final (máx. 30 filas por ejecución):</label><br>
     <input type="number" id="endRow" name="endRow" min="1" required><br><br>
 
-    <input type="button" id="sendBtn" value="Enviar Certificados" onclick="iniciarEnvioPorRango()">
+    <input type="button" id="sendBtn" value="Enviar Reconocimientos" onclick="iniciarEnvioPorRango()">
     <input type="button" id="stopBtn" value="Detener" onclick="detenerEnvio()" disabled>
   </form>
 
@@ -61,20 +61,20 @@
 
       const cantidad = endRow - startRow + 1;
       if (cantidad < 5 || cantidad > 30) {
-        alert("Solo puedes enviar entre 5 y 30 certificados por ejecución.");
-        logMensaje("❌ Se solicitó enviar " + cantidad + " certificados. Límite: 5–30.");
+        alert("Solo puedes enviar entre 5 y 30 Reconocimientos por ejecución.");
+        logMensaje("❌ Se solicitó enviar " + cantidad + " Reconocimientos. Límite: 5–30.");
         return;
       }
 
       bloquearFormulario(true);
-      logMensaje("📥 Iniciando envío de certificados por rango...");
+      logMensaje("📥 Iniciando envío de Reconocimientos por rango...");
       logMensaje(`🔗 Hoja de cálculo: ${sheetUrl}`);
-      logMensaje(`📁 Carpeta de certificados: ${folderUrl}`);
+      logMensaje(`📁 Carpeta de Reconocimientos: ${folderUrl}`);
       logMensaje(`📌 Rango de filas: ${startRow} a ${endRow}`);
 
       google.script.run
         .withSuccessHandler(() => {
-          logMensaje("✅ Certificados enviados satisfactoriamente.");
+          logMensaje("✅ Reconocimientos enviados satisfactoriamente.");
           bloquearFormulario(false);
         })
         .withFailureHandler((error) => {
@@ -82,7 +82,7 @@
           logMensaje("❌ Error en el envío: " + error.message);
           bloquearFormulario(false);
         })
-        .procesarYEnviarCertificadosPorRango(startRow, endRow, sheetUrl, folderUrl, mensajeEmail);
+        .procesarYEnviarReconocimientosPorRango(startRow, endRow, sheetUrl, folderUrl, mensajeEmail);
     }
 
     function detenerEnvio() {
@@ -92,7 +92,7 @@
           bloquearFormulario(false);
           logMensaje("⛔ Proceso detenido por el usuario.");
         })
-        .detenerEnvioCertificados();
+        .detenerEnvioReconocimientos();
     }
 
     function bloquearFormulario(bloquear) {

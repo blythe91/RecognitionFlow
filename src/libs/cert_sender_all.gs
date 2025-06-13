@@ -1,5 +1,5 @@
 /**
- * CertiFlow - Librería para generación y envío de certificados digitales
+ * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
  * Licencia dual:
@@ -9,10 +9,10 @@
  * El usuario puede optar por cualquiera de estas licencias.
  */
 
-function enviarCertificadosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
-  Logger.log("📄 sheet_ID recibido en enviarCertificadosEmail: " + sheet_Id);
-  Logger.log("📄 folder_Id recibido en enviarCertificadosEmail: " + folder_Id);
-  Logger.log("📄 batchSize recibido en enviarCertificadosEmail: " + batchSize);
+function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
+  Logger.log("📄 sheet_ID recibido en enviarReconocimientosEmail: " + sheet_Id);
+  Logger.log("📄 folder_Id recibido en enviarReconocimientosEmail: " + folder_Id);
+  Logger.log("📄 batchSize recibido en enviarReconocimientosEmail: " + batchSize);
 
   
   
@@ -81,49 +81,49 @@ function enviarCertificadosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
     if (endIndex < data.length) {
       props.setProperty("lastProcessedIndexEnvio", endIndex);
       Logger.log("Proceso pausado. Continuará desde la fila: " + endIndex);
-      triggerEnviarCertificados(); // crea un nuevo trigger
+      triggerEnviarReconocimientos(); // crea un nuevo trigger
     } else {
       props.deleteProperty("lastProcessedIndexEnvio");
       props.deleteProperty("totalEnviados");
       eliminarTriggerEnvio();
-      Logger.log("Todos los certificados fueron enviados.");
+      Logger.log("Todos los Reconocimientos fueron enviados.");
       return;
     }
 
   } catch (e) {
-    Logger.log("Error en enviarCertificadosEmail (dentro de enviarCertificadosEmail): " + e.toString());
+    Logger.log("Error en enviarReconocimientosEmail (dentro de enviarReconocimientosEmail): " + e.toString());
   }
 }
 
-function triggerEnviarCertificados() {
+function triggerEnviarReconocimientos() {
   
   eliminarTriggerEnvio();
 
   var triggers = ScriptApp.getProjectTriggers();
-  var existe = triggers.some(t => t.getHandlerFunction() === "continuarEnvioCertificados");
+  var existe = triggers.some(t => t.getHandlerFunction() === "continuarEnvioReconocimientos");
   if (existe) return;
 
-  ScriptApp.newTrigger("continuarEnvioCertificados")
+  ScriptApp.newTrigger("continuarEnvioReconocimientos")
     .timeBased()
     .after(50000)
     .create();
 }
 
-function continuarEnvioCertificados() {
+function continuarEnvioReconocimientos() {
   var props = PropertiesService.getScriptProperties();
   var sheet_Id = props.getProperty("sheet_Id_envio");
   var folder_Id = props.getProperty("folder_Id_envio");
   var batchSize = parseInt(props.getProperty("batch_size_envio"));
 
   if (sheet_Id && folder_Id && batchSize) {
-    enviarCertificadosEmail(sheet_Id, folder_Id, batchSize);
+    enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize);
   }
 }
 
 function eliminarTriggerEnvio() {
   var triggers = ScriptApp.getProjectTriggers();
   for (var i = 0; i < triggers.length; i++) {
-    if (triggers[i].getHandlerFunction() === "continuarEnvioCertificados") {
+    if (triggers[i].getHandlerFunction() === "continuarEnvioReconocimientos") {
       ScriptApp.deleteTrigger(triggers[i]);
     }
   }
@@ -139,7 +139,7 @@ function obtenerProgresoEnvio() {
 
   return {
     porcentaje: porcentaje,
-    mensaje: "Enviando certificados...",
+    mensaje: "Enviando Reconocimientos...",
     generados: last,
     total: total
   };

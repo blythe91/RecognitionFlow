@@ -11,24 +11,24 @@
   </style>
 </head>
 <body>
-  <h2>Enviar Certificados Por Filas</h2>
+  <h2>Enviar Reconocimientos Por Filas</h2>
   <form id="sendRowsForm" onsubmit="return false;">
     <label for="sheetUrl">URL de la Hoja de Cálculo:</label><br>
     <input type="text" id="sheetUrl" name="sheetUrl" required><br><br>
 
-    <label for="folderUrl">URL de la Carpeta con los Certificados:</label><br>
+    <label for="folderUrl">URL de la Carpeta con los Reconocimientos:</label><br>
     <input type="text" id="folderUrl" name="folderUrl" required><br><br>
 
     <label for="mensajeEmail">Texto adicional al correo electrónico:</label><br>
     <textarea id="mensajeEmail" name="mensajeEmail" placeholder="Ingrese la información adicional que debe ser agregada al correo electrónico..."></textarea><br><br>
 
-    <label for="specificRows">ID de los certificados a enviar (COL-A: ej. 2,4,7, máx. 30):</label><br>
+    <label for="specificRows">ID de los Reconocimientos a enviar (COL-A: ej. 2,4,7, máx. 30):</label><br>
     <input type="text" id="specificRows" name="specificRows" required
            placeholder="2,4,7 (máx. 30 filas)"
            pattern="^\d+(,\d+)*$"
            title="Ingresa hasta 30 números separados por comas, sin espacios. Ejemplo: 2,5,9"><br><br>
 
-    <input type="button" id="sendBtn" value="Enviar Certificados" onclick="iniciarEnvioFiltrado()">
+    <input type="button" id="sendBtn" value="Enviar Reconocimientos" onclick="iniciarEnvioFiltrado()">
     <input type="button" id="stopBtn" value="Detener" onclick="detenerEnvio()" disabled>
   </form>
 
@@ -60,20 +60,20 @@
 
       const filas = specificRows.split(',');
       if (filas.length > 30) {
-        alert("Solo puedes enviar hasta 30 certificados por ejecución.");
-        logMensaje("❌ Se excedió el límite de 30 certificados.");
+        alert("Solo puedes enviar hasta 30 Reconocimientos por ejecución.");
+        logMensaje("❌ Se excedió el límite de 30 Reconocimientos.");
         return;
       }
 
       bloquearFormulario(true);
-      logMensaje("📥 Iniciando envío de certificados por filas...");
+      logMensaje("📥 Iniciando envío de Reconocimientos por filas...");
       logMensaje("🔗 Hoja de cálculo: " + sheetUrl);
-      logMensaje("📁 Carpeta de certificados: " + folderUrl);
+      logMensaje("📁 Carpeta de Reconocimientos: " + folderUrl);
       logMensaje("🎯 Filas: " + specificRows);
 
       google.script.run
         .withSuccessHandler(() => {
-          logMensaje("✅ Certificados enviados satisfactoriamente.");
+          logMensaje("✅ Reconocimientos enviados satisfactoriamente.");
           bloquearFormulario(false);
         })
         .withFailureHandler((error) => {
@@ -81,7 +81,7 @@
           logMensaje("❌ Error en el envío: " + error.message);
           bloquearFormulario(false);
         })
-        .procesarYEnviarCertificadosPorFilas(specificRows, sheetUrl, folderUrl, mensajeEmail);
+        .procesarYEnviarReconocimientosPorFilas(specificRows, sheetUrl, folderUrl, mensajeEmail);
     }
 
     function detenerEnvio() {
@@ -91,7 +91,7 @@
           bloquearFormulario(false);
           logMensaje("⛔ Proceso detenido por el usuario.");
         })
-        .detenerEnvioCertificados();
+        .detenerEnvioReconocimientos();
     }
 
     function bloquearFormulario(bloquear) {

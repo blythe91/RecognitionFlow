@@ -1,5 +1,5 @@
 /**
- * CertiFlow - Librería para generación y envío de certificados digitales
+ * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
  * Licencia dual:
@@ -9,7 +9,7 @@
  * El usuario puede optar por cualquiera de estas licencias.
  */
 
-function generarCertificadosPorFilas(filasCSV, sheet_Id, template_Id, folder_Id) {
+function generarReconocimientosPorFilas(filasCSV, sheet_Id, template_Id, folder_Id) {
   try {
     var sheet = SpreadsheetApp.openById(sheet_Id).getSheetByName("data");
     var data = sheet.getDataRange().getValues();
@@ -94,6 +94,6 @@ function generarCertificadosPorFilas(filasCSV, sheet_Id, template_Id, folder_Id)
     });
 
   } catch (e) {
-    Logger.log("Error en generarCertificadosPorFilas: " + e.toString());
+    Logger.log("Error en generarReconocimientosPorFilas: " + e.toString());
   }
 }

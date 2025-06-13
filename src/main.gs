@@ -1,5 +1,5 @@
 /**
- * CertiFlow - Librería para generación y envío de certificados digitales
+ * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
  * Licencia dual:
@@ -9,7 +9,7 @@
  * El usuario puede optar por cualquiera de estas licencias.
  */
 
-function procesarYEnviarTotalCertificados(sheetUrl, folderUrl, batchSize, mensajeEmail, digitoControl) {
+function procesarYEnviarTotalReconocimientos(sheetUrl, folderUrl, batchSize, mensajeEmail, digitoControl) {
   const sheetId = obtenerIdHojaCalculo(sheetUrl);
   const folderId = obtenerIdCarpeta(folderUrl);
 
@@ -30,17 +30,17 @@ function procesarYEnviarTotalCertificados(sheetUrl, folderUrl, batchSize, mensaj
     throw new Error("Alguno de los IDs no pudo extraerse correctamente.");
   }
   try {
-    enviarCertificadosEmail(sheetId, folderId, batchSize, mensajeEmail);
+    enviarReconocimientosEmail(sheetId, folderId, batchSize, mensajeEmail);
     return;
   } catch (e) {
-    Logger.log("❌ Error en enviarCertificadosEmail: " + e.message);
+    Logger.log("❌ Error en enviarReconocimientosEmail: " + e.message);
     throw e;
   }
 }
 
 
 
-function procesarYEnviarCertificadosPorFilas(filasSeleccionadas, sheetUrl, folderUrl, mensajeEmail) {
+function procesarYEnviarReconocimientosPorFilas(filasSeleccionadas, sheetUrl, folderUrl, mensajeEmail) {
   const sheetId = obtenerIdHojaCalculo(sheetUrl);
   const folderId = obtenerIdCarpeta(folderUrl);
 
@@ -54,15 +54,15 @@ function procesarYEnviarCertificadosPorFilas(filasSeleccionadas, sheetUrl, folde
     throw new Error("Alguno de los IDs no pudo extraerse correctamente.");
   }
   try {
-    enviarCertificadosEmailPorFilas(sheetId, folderId, filasSeleccionadas, mensajeEmail);
+    enviarReconocimientosEmailPorFilas(sheetId, folderId, filasSeleccionadas, mensajeEmail);
     return;
   } catch (e) {
-    Logger.log("❌ Error en enviarCertificadosEmailPorFilas: " + e.message);
+    Logger.log("❌ Error en enviarReconocimientosEmailPorFilas: " + e.message);
     throw e;
   }
 }
 
-function procesarYEnviarCertificadosPorRango(startRow, endRow, sheetUrl, folderUrl, mensajeEmail){
+function procesarYEnviarReconocimientosPorRango(startRow, endRow, sheetUrl, folderUrl, mensajeEmail){
   const sheetId = obtenerIdHojaCalculo(sheetUrl);
   const folderId = obtenerIdCarpeta(folderUrl);
 
@@ -76,15 +76,15 @@ function procesarYEnviarCertificadosPorRango(startRow, endRow, sheetUrl, folderU
     throw new Error("Alguno de los IDs no pudo extraerse correctamente.");
   }
   try {
-    enviarCertificadosEmailPorRango(startRow, endRow, sheetId, folderId, mensajeEmail);
+    enviarReconocimientosEmailPorRango(startRow, endRow, sheetId, folderId, mensajeEmail);
     return;
   } catch (e) {
-    Logger.log("❌ Error en enviarCertificadosEmailPorFilas: " + e.message);
+    Logger.log("❌ Error en enviarReconocimientosEmailPorFilas: " + e.message);
     throw e;
   }
 }
 
-function procesarYGenerarCertificados(sheetUrl, templateUrl, folderUrl, batchSize) {
+function procesarYGenerarReconocimientos(sheetUrl, templateUrl, folderUrl, batchSize) {
   const sheetId = obtenerIdHojaCalculo(sheetUrl);
   const templateId = obtenerIdPlantillaSlide(templateUrl);
   const folderId = obtenerIdCarpeta(folderUrl);
@@ -102,11 +102,11 @@ function procesarYGenerarCertificados(sheetUrl, templateUrl, folderUrl, batchSiz
     throw new Error("Alguno de los IDs no pudo extraerse correctamente.");
   }
 
-  generarCertificados(sheetId, templateId, folderId, batchSize);
+  generarReconocimientos(sheetId, templateId, folderId, batchSize);
 }
 
 
-function procesarYGenerarCertificadosPorFilas(filasCSV, sheetUrl, templateUrl, folderUrl) {
+function procesarYGenerarReconocimientosPorFilas(filasCSV, sheetUrl, templateUrl, folderUrl) {
   const sheetId = obtenerIdHojaCalculo(sheetUrl);
   const templateId = obtenerIdPlantillaSlide(templateUrl);
   const folderId = obtenerIdCarpeta(folderUrl);
@@ -124,12 +124,12 @@ function procesarYGenerarCertificadosPorFilas(filasCSV, sheetUrl, templateUrl, f
     throw new Error("Alguno de los IDs no pudo extraerse correctamente.");
   }
 
-  generarCertificadosPorFilas(filasCSV, sheetId, templateId, folderId);
+  generarReconocimientosPorFilas(filasCSV, sheetId, templateId, folderId);
 }
 
-function detenerGeneracionCertificados() {
+function detenerGeneracionReconocimientos() {
   eliminarTrigger();
   PropertiesService.getScriptProperties().deleteAllProperties();
   PropertiesService.getScriptProperties().deleteProperty("lastProcessedIndex");
-  PropertiesService.getScriptProperties().deleteProperty("totalCertificados");
+  PropertiesService.getScriptProperties().deleteProperty("totalReconocimientos");
 }
