@@ -2,6 +2,7 @@
  * RecognitionFlow - Librería para generación y envío de Reconocimientos digitales
  * © 2025 Oscar Giovanni Castro Contreras
  * 
+ *
  * Licencia dual:
  * - MIT License (LICENSE-MIT)
  * - GNU GPLv3 (LICENSE-GPL)
