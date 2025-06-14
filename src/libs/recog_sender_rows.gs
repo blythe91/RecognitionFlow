@@ -30,15 +30,14 @@ function enviarReconocimientosEmailPorFilas(sheet_Id, folder_Id, filasSelecciona
       }
 
       var fila = data[i];
-
       var primerNombre = fila[1];
       var segundoNombre = fila[2];
       var primerApellido = fila[3];
       var segundoApellido = fila[4];
       var correo = fila[7];
-      var tituloEvento = fila[10];
-      var textoFecha = fila[17];
-      var codigoCertificado = fila[12];
+      var textoReconocimiento = fila[8]; // COL-I
+      var textoFecha = fila[9];          // COL-J
+      var codigoCertificado = fila[11];  // COL-L
 
       var nombreCompleto = (primerNombre + " " + (segundoNombre || "") + " " + primerApellido + " " + (segundoApellido || "")).trim();
       var nombreCertificado = "Certificado_" + codigoCertificado + "_" + primerNombre + "_" + primerApellido + ".pdf";
@@ -47,13 +46,12 @@ function enviarReconocimientosEmailPorFilas(sheet_Id, folder_Id, filasSelecciona
       if (archivos.hasNext()) {
         var archivo = archivos.next();
 
-        var asunto = "Certificado de participación - " + codigoCertificado + " - " + tituloEvento;
+        var asunto = "Reconocimiento digital - " + codigoCertificado;
 
-        var cuerpo = "Estimado(a) " + nombreCompleto + ", reciba un cordial saludo en nombre de la Universidad Nacional Experimental del Táchira UNET\n\n" +
-                     "Nos permitimos informarle que en el archivo adjunto podrá obtener el certificado digital correspondiente a su participación en el evento \n\"" + tituloEvento + "\", " + textoFecha + ".\n\n" +
-                     "Es de destacar que el presente certificado ha sido firmado por las autoridades de nuestra institución universitaria; lo que lo valida como un documento oficial y avala que usted ha recibido formación profesional a través de esta casa de estudios. "+ textEmail+"\n\n" +
-                     "Le invitamos a seguir participando en futuros eventos.\n\n" +
-                     "Atentamente,\n\nEquipo de Soporte Tecnológico\nDecanato de Investigación\nUNET\n\n" +
+        var cuerpo = "Estimado(a) " + nombreCompleto + ", reciba un cordial saludo en nombre de la Universidad Nacional Experimental del Táchira UNET.\n\n" +
+                     "Nos permitimos informarle que en el archivo adjunto podrá obtener el certificado digital correspondiente al reconocimiento otorgado a usted, " + textoFecha + ".\n\n" +
+                     "El reconocimiento fue conferido " + textoReconocimiento + ".\n\n" +
+                     (textEmail ? textEmail + "\n\n" : "") +
                      "Nota: Ante cualquier duda o aclaratoria relacionada con su certificado, escribir al correo electrónico: soporteinv@unet.edu.ve; sugiriendo en tal caso que sea como respuesta a este correo electrónico.\n";
 
         MailApp.sendEmail({
@@ -75,5 +73,3 @@ function enviarReconocimientosEmailPorFilas(sheet_Id, folder_Id, filasSelecciona
     Logger.log("❌ Error en enviarReconocimientosEmailPorFilas: " + e.toString());
   }
 }
-
-
