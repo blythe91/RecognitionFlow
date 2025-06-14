@@ -5,8 +5,6 @@
  * Licencia dual:
  * - MIT License (LICENSE-MIT)
  * - GNU GPLv3 (LICENSE-GPL)
- * 
- * El usuario puede optar por cualquiera de estas licencias.
  */
 
 /**
@@ -34,7 +32,9 @@ function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
       const row = data[i];
       const nombreCompleto = `${row[1]} ${row[2] || ""} ${row[3]} ${row[4] || ""}`.trim();
       const documentoIdentidad = (row[5] ? row[5] + " " : "") + row[6];
-      const codigoCertificado = row[12];
+      const codigoCertificado = row[11];
+      const textoReconocimiento = row[8];
+      const textoFecha = row[9];
       const nombreCertificado = `Certificado_${codigoCertificado}_${row[1]}_${row[3]}.pdf`;
 
       if (folder.getFilesByName(nombreCertificado).hasNext()) {
@@ -48,12 +48,8 @@ function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
 
       slide.replaceAllText("{{nombre-participante}}", nombreCompleto);
       slide.replaceAllText("{{di-participante}}", documentoIdentidad);
-      slide.replaceAllText("{{tipo-participante}}", row[9]);
-      slide.replaceAllText("{{nombre-evento}}", row[10]);
-      slide.replaceAllText("{{modalidad}}", row[13]);
-      slide.replaceAllText("{{horas}}", row[14]);
-      slide.replaceAllText("{{texto-fecha}}", row[17]);
-      slide.replaceAllText("{{ubicacion}}", row[18]);
+      slide.replaceAllText("{{texto-reconocimiento}}", textoReconocimiento);
+      slide.replaceAllText("{{texto-fecha}}", textoFecha);
       slide.replaceAllText("{{cod-certificado}}", codigoCertificado);
 
       presentation.saveAndClose();
@@ -72,10 +68,8 @@ function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
       PropertiesService.getScriptProperties().setProperty("lastProcessedIndex", i);
     }
 
-    // Aquí se decide si continuar o finalizar
     if (endIndex < data.length) {
       triggerGenerarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size);
-      return; // Salimos de la función para dejar que el trigger continúe
     } else {
       eliminarTrigger();
       PropertiesService.getScriptProperties().deleteProperty("lastProcessedIndex");
@@ -86,42 +80,24 @@ function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
   }
 }
 
-
-/**
- * Crea un trigger temporizado para continuar la generación de Reconocimientos en un lote posterior.
- * 
- * @param {string} sheet_Id
- * @param {string} template_Id
- * @param {string} folder_Id
- * @param {number} batch_size
- */
 function triggerGenerarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
-  // Elimina cualquier trigger anterior de esta función
-  eliminarTrigger();  // Esto ya lo haces bien
+  eliminarTrigger();
 
-  // Evita crear un nuevo trigger si ya hay uno agendado (doble verificación opcional)
   var triggers = ScriptApp.getProjectTriggers();
   var existe = triggers.some(t => t.getHandlerFunction() === "continuarGeneracionReconocimientos");
-  if (existe) return;  // Ya hay uno activo, no creamos otro
+  if (existe) return;
 
-  // Guarda parámetros
   PropertiesService.getScriptProperties().setProperty("sheet_Id", sheet_Id);
   PropertiesService.getScriptProperties().setProperty("template_Id", template_Id);
   PropertiesService.getScriptProperties().setProperty("folder_Id", folder_Id);
   PropertiesService.getScriptProperties().setProperty("batch_size", batch_size.toString());
 
-  // Crea nuevo trigger para continuar después de 50 segundos
   ScriptApp.newTrigger("continuarGeneracionReconocimientos")
     .timeBased()
     .after(50000)
     .create();
 }
 
-
-/**
- * Función disparada por el trigger para continuar la generación de Reconocimientos.
- * Recupera los parámetros guardados y llama a la función principal.
- */
 function continuarGeneracionReconocimientos() {
   var sheet_Id = PropertiesService.getScriptProperties().getProperty("sheet_Id");
   var template_Id = PropertiesService.getScriptProperties().getProperty("template_Id");
@@ -133,10 +109,6 @@ function continuarGeneracionReconocimientos() {
   }
 }
 
-/**
- * Elimina todos los triggers asociados a la función continuarGeneracionReconocimientos
- * para evitar múltiples ejecuciones paralelas o duplicadas.
- */
 function eliminarTrigger() {
   var triggers = ScriptApp.getProjectTriggers();
   for (var i = 0; i < triggers.length; i++) {
@@ -150,7 +122,6 @@ function obtenerProgresoReconocimientos() {
   var props = PropertiesService.getScriptProperties();
   var last = parseInt(props.getProperty("lastProcessedIndex")) || 0;
   var total = parseInt(props.getProperty("totalReconocimientos")) || 0;
-
   var porcentaje = total ? Math.floor((last / total) * 100) : 0;
 
   return {
