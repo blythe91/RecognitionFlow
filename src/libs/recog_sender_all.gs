@@ -14,10 +14,7 @@ function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
   Logger.log("📄 folder_Id recibido en enviarReconocimientosEmail: " + folder_Id);
   Logger.log("📄 batchSize recibido en enviarReconocimientosEmail: " + batchSize);
 
-  
-  
   try {
-
     var sheet = SpreadsheetApp.openById(sheet_Id).getSheetByName("data");
     var data = sheet.getDataRange().getValues();
     var folder = DriveApp.getFolderById(folder_Id);
@@ -34,9 +31,9 @@ function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
       var primerApellido = data[i][3];
       var segundoApellido = data[i][4];
       var correo = data[i][7];
-      var tituloEvento = data[i][10];
-      var textoFecha = data[i][17];
-      var codigoCertificado = data[i][12];
+      var textoReconocimiento = data[i][8]; // COL-I
+      var textoFecha = data[i][9];          // COL-J
+      var codigoCertificado = data[i][11];
 
       var nombreCompleto = (primerNombre + " " + (segundoNombre || "") + " " + primerApellido + " " + (segundoApellido || "")).trim();
       var nombreCertificado = "Certificado_" + codigoCertificado + "_" + primerNombre + "_" + primerApellido + ".pdf";
@@ -45,25 +42,13 @@ function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
       if (archivos.hasNext()) {
         var archivo = archivos.next();
 
-        var asunto = "Certificado de participación - " + codigoCertificado +" - "+tituloEvento;
+        var asunto = "Reconocimiento digital - " + codigoCertificado;
 
-        var cuerpo = "Estimado(a) " + nombreCompleto + ", reciba un cordial saludo en nombre de la Universidad Nacional Experimental del Táchira UNET\n\n" +
-                     "Nos permitimos informarle que en el archivo adjunto podrá obtener el certificado digital correspondiente a su participación en el evento \n\"" + tituloEvento + "\", " + textoFecha + ".\n\n" +
-                     "Es de destacar que el presente certificado ha sido firmado por las autoridades de nuestra institución universitaria; lo que lo valida como un documento oficial y avala que usted ha recibido formación profesional a través de esta casa de estudios. "+ textEmail+"\n\n" +
-                     "Le invitamos a seguir participando en futuros eventos.\n\n" +
-                     "Atentamente,\n\nEquipo de Soporte Tecnológico\nDecanato de Investigación\nUNET\n\n" +
+        var cuerpo = "Estimado(a) " + nombreCompleto + ", reciba un cordial saludo en nombre de la Universidad Nacional Experimental del Táchira UNET.\n\n" +
+                     "Nos permitimos informarle que en el archivo adjunto podrá obtener el certificado digital correspondiente al reconocimiento otorgado a usted, " + textoFecha + ".\n\n" +
+                     "El reconocimiento fue conferido " + textoReconocimiento + ".\n\n" +
+                     `${mensajeEmail ? mensajeEmail + "\n\n" : ""}` +
                      "Nota: Ante cualquier duda o aclaratoria relacionada con su certificado, escribir al correo electrónico: soporteinv@unet.edu.ve; sugiriendo en tal caso que sea como respuesta a este correo electrónico.\n";
-
-        /* Anterior texto estandar utilizado
-
-        var cuerpo = "Estimado(a) " + nombreCompleto + ", reciba un cordial saludo en nombre de la Universidad Nacional Experimental del Táchira UNET\n\n" +
-                     "Nos permitimos informarle que en el archivo adjunto podrá obtener el certificado digital correspondiente a su participación en el evento \n\"" + tituloEvento + "\", " + textoFecha + ".\n\n" +
-                     "Es de destacar que el presente certificado ha sido firmado por las autoridades de nuestra institución universitaria; lo que lo valida como un documento oficial y avala que usted ha recibido formación profesional a través de esta casa de estudios; de haber cancelado el aporte para el certificado físico, a la brevedad se le indicará para que proceda a retirarlo.\n\n" +
-                     "Le invitamos a seguir participando en futuros eventos.\n\n" +
-                     "Atentamente,\n\nEquipo de Soporte Tecnológico\nDecanato de Investigación\nUNET\n\n" +
-                     "Nota: Ante cualquier duda o aclaratoria relacionada con su certificado, escribir al correo electrónico: soporteinv@unet.edu.ve; sugiriendo en tal caso que sea como respuesta a este correo electrónico.\n"; */
-
-        
 
         MailApp.sendEmail({
           to: correo,
@@ -81,7 +66,7 @@ function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
     if (endIndex < data.length) {
       props.setProperty("lastProcessedIndexEnvio", endIndex);
       Logger.log("Proceso pausado. Continuará desde la fila: " + endIndex);
-      triggerEnviarReconocimientos(); // crea un nuevo trigger
+      triggerEnviarReconocimientos();
     } else {
       props.deleteProperty("lastProcessedIndexEnvio");
       props.deleteProperty("totalEnviados");
@@ -96,7 +81,6 @@ function enviarReconocimientosEmail(sheet_Id, folder_Id, batchSize, textEmail) {
 }
 
 function triggerEnviarReconocimientos() {
-  
   eliminarTriggerEnvio();
 
   var triggers = ScriptApp.getProjectTriggers();
@@ -129,7 +113,6 @@ function eliminarTriggerEnvio() {
   }
 }
 
-// Progreso para el frontend
 function obtenerProgresoEnvio() {
   var props = PropertiesService.getScriptProperties();
   var last = parseInt(props.getProperty("lastProcessedIndexEnvio")) || 0;
