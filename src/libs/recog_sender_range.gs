@@ -19,6 +19,9 @@
  * @param {string} mensajeEmail Texto adicional a incluir en el cuerpo del correo.
  */
 function enviarReconocimientosEmailPorRango(startRow, endRow, sheetId, folderId, mensajeEmail) {
+  // limpia las propiedades almacenadas y los triggers si existen
+  detenerEnvioReconocimientos();
+
   try {
     Logger.log("📄 Rango: " + startRow + " a " + endRow);
     if (endRow - startRow + 1 < 5 || endRow - startRow + 1 > 30) {

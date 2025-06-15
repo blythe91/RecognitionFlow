@@ -10,6 +10,9 @@
  */
 
 function generarReconocimientosPorFilas(filasCSV, sheet_Id, template_Id, folder_Id) {
+  // limpia las propiedades almacenadas y los triggers antes de comenzar a generar.
+  detenerGeneracionReconocimientos();
+
   try {
     var sheet = SpreadsheetApp.openById(sheet_Id).getSheetByName("data");
     var data = sheet.getDataRange().getValues();
