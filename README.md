@@ -3,7 +3,7 @@
 <img src="assets/recognitionflow.jpeg" width="200" />
 **RecognitionFlow** es una librería de Google Apps Script para la generación y envío masivo de **reconocimientos digitales** en formato PDF, a partir de una base de datos en Google Sheets y una plantilla de Google Slides.
 
-Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), permite automatizar la entrega de diplomas de agradecimiento o certificados de participación, simplificando todo el proceso con opciones flexibles y una interfaz gráfica amigable.
+Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), permite automatizar la entrega de diplomas de agradecimiento o Reconocimientos de participación, simplificando todo el proceso con opciones flexibles y una interfaz gráfica amigable.
 
 ---
 
@@ -57,7 +57,13 @@ Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), 
 
 ### Vista de la plantilla
 
-🚧 *[Coloca aquí una imagen como esta: **`assets/plantilla.jpg`**]*
+### Plantilla de Google Slides
+![plantilla reconocimiento](assets/plantilla.png)
+
+### Formato de Google Spreadsheets
+![hoja de cálculo](assets/hoja.png)
+
+
 
 ---
 
@@ -88,9 +94,38 @@ Reconocimientos
     └️ Por rango de filas
 ```
 
-### Capturas de pantalla del menú e interfaces
+### Menú principal en la opción "Reconocimientos"
+![menú](assets/menu.png)
 
-🚧 *[Aquí puedes agregar capturas como: **`assets/menu.png`**, **`assets/generar_todos.png`**, etc.]*
+### Submenú de "Generar Reconocimientos"
+
+![Generar Reconocimientos](assets/submenu1.png)
+
+### Submenú de "Enviar Reconocimientos"
+![Enviar Reconocimientos](assets/submenu2.png)
+
+Cada opción abre una interfaz gráfica sencilla para que puedas ingresar los datos necesarios (URL de spreadsheet, plantilla, carpeta Drive, filas o rangos, mensaje personalizado) y ejecutar la acción deseada.
+
+## Interfaz Gráfica de las opciones de menú
+
+### Generar Reconocimientos
+![Generar todos los Reconocimientos](assets/generar_todos_reconocimientos.png)
+
+### Generar Reconocimientos Por Filas
+![Generar todos los Reconocimientos](assets/generar_reconocimientos_filas.png)
+
+### Vista de Ejecución
+![Vista de ejecución](assets/ventana_ejecucion.png)
+
+### Enviar todos los Reconocimientos
+![Enviar todos los Reconocimientos](assets/enviar_todos_reconocimientos.png)
+
+### Generar Reconocimientos por filas
+![Generar Reconocimientos por filas](assets/enviar_reconocimientos_filas.png)
+
+### Enviar Reconocimientos por rango de filas
+![Enviar Reconocimientos por rango de filas](assets/enviar_reconocimientos_rango.png)
+
 
 ---
 
