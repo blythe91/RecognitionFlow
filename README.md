@@ -1,93 +1,164 @@
-# RecognitionFlow
+# RecognitionFlow 🏅📜
 
+**RecognitionFlow** es una librería de Google Apps Script para la generación y envío masivo de **reconocimientos digitales** en formato PDF, a partir de una base de datos en Google Sheets y una plantilla de Google Slides.
 
+Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), permite automatizar la entrega de diplomas de agradecimiento o certificados de participación, simplificando todo el proceso con opciones flexibles y una interfaz gráfica amigable.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Características principales ✨
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- Generación masiva de **reconocimientos** en lotes (por defecto 30 por ejecución).
+- Generación basada en filas específicas, separadas por comas sin espacios.
+- Envío masivo de reconocimientos por correo electrónico en lotes.
+- Envío por filas específicas o por rangos definidos (mínimo 5, máximo 30 filas).
+- Evita duplicados: no genera reconocimientos que ya existan en la carpeta destino.
+- Muestra resumen de progreso y estado de ejecución.
+- Interfaz integrada en Google Sheets mediante un menú personalizado.
 
-## Add your files
+---
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Requisitos 📝
 
+- Tener un Google Spreadsheet con los siguientes **encabezados exactos**:
+
+  ```
+  ID  
+  primer_nombre  
+  segundo_nombre  
+  primer_apellido  
+  segundo_apellido  
+  prefijo_documento_identidad  
+  documento_identidad  
+  correo_electrónico  
+  texto-reconocimiento  
+  texto-fecha  
+  cod-evento  
+  cod-certificado  
+  URL_Reconocimiento
+  TIPO
+  ```
+
+- La plantilla de Google Slides debe contener los siguientes **marcadores**:
+
+  ```
+  {{nombre-participante}}  
+  {{di-participante}}  
+  {{texto-reconocimiento}}  
+  {{texto-fecha}}  
+  {{cod-certificado}}
+  ```
+
+> Los marcadores deben estar escritos tal cual, incluyendo las llaves dobles `{{ }}`.\
+> Puedes incluir una segunda diapositiva como contraportada si deseas agregar contenido adicional como temarios o mensajes.
+
+> 📁 *Ejemplo de plantilla en la carpeta **`docs/`*
+
+### Vista de la plantilla
+
+🚧 *[Coloca aquí una imagen como esta: **`assets/plantilla.jpg`**]*
+
+---
+
+## Instalación ⚙️
+
+1. Clona o descarga el repositorio en tu máquina local.
+2. Instala [clasp](https://github.com/google/clasp) y configura sus pre-requisitos (Node.js, npm).
+3. Ejecuta `clasp login` para conectar con tu cuenta Google.
+4. Usa `clasp push` para subir el proyecto a tu entorno de Google Apps Script.
+5. Abre el Google Spreadsheet con tu base de datos: verás un nuevo menú **Reconocimientos**.
+
+> *Nota:* Planeo publicar esta librería oficialmente para ser importada directamente.
+
+---
+
+## Uso 🚀
+
+Cuando abras tu hoja de cálculo, verás un nuevo menú:
+
+```none
+Reconocimientos
+├️ Generar reconocimientos
+│   ├️ Todos
+│   └️ Por filas
+└️ Enviar reconocimientos
+    ├️ Todos
+    ├️ Por filas
+    └️ Por rango de filas
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/equipo-de-desarrollo-del-decanato-de-investigaci-n/recognitionflow.git
-git branch -M main
-git push -uf origin main
+
+### Capturas de pantalla del menú e interfaces
+
+🚧 *[Aquí puedes agregar capturas como: **`assets/menu.png`**, **`assets/generar_todos.png`**, etc.]*
+
+---
+
+## Configuración avanzada 🛠️
+
+Puedes cambiar el número de elementos procesados por ejecución (lote) desde:
+
+```javascript
+// src/utils/utils.gs
+const DEFAULT_BATCH_SIZE = 30;
 ```
 
-## Integrate with your tools
+Además, puedes usar tanto IDs como URLs completas para:
 
-- [ ] [Set up project integrations](https://gitlab.com/equipo-de-desarrollo-del-decanato-de-investigaci-n/recognitionflow/-/settings/integrations)
+- Hoja de cálculo
+- Plantilla de Slides
+- Carpeta de Drive
 
-## Collaborate with your team
+La librería extrae automáticamente el ID de la URL.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+---
 
-## Test and Deploy
+## Estructura del proyecto 📂
 
-Use the built-in continuous integration in GitLab.
+```none
+src/
+├── libs/
+│   ├── recgen_all.gs              # Genera todos los reconocimientos
+│   ├── recgen_rows.gs             # Genera reconocimientos por filas
+│   ├── recog_sender_all.gs        # Envía todos los reconocimientos
+│   ├── recog_sender_range.gs      # Envía reconocimientos por rango de filas
+│   ├── recog_sender_rows.gs       # Envía reconocimientos por filas específicas
+├── utils/
+│   └── utils.gs                   # Funciones utilitarias generales
+├── main.gs                        # Lógica principal del proyecto
+├── menu.gs                        # Configuración del menú en Sheets
+├── test/
+│   └── test.gs                    # Pruebas
+├── modal_cert_all.html           # UI para generar todos los reconocimientos
+├── modal_cert_rows.html          # UI para generar por filas
+├── modal_send_all.html           # UI para enviar todos
+├── modal_send_rows.html          # UI para enviar por filas
+├── modal_send_range.html         # UI para enviar por rango
+└── README.md
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+---
 
-***
+## Licencias 📜
 
-# Editing this README
+Este proyecto se distribuye bajo una política de **doble licencia**:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+- 🗭 **MIT License**: Uso libre con restricciones mínimas.
+- 🔳 **GNU GPLv3**: Si redistribuyes el código, debe ser bajo esta misma licencia y con código fuente disponible.
 
-## Suggestions for a good README
+### 📌 ¿Cuál elegir?
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- Si lo integrarás en un proyecto cerrado, puedes usar la licencia **MIT**.
+- Si quieres que tu versión siga siendo software libre, usa **GPLv3**.
 
-## Name
-Choose a self-explaining name for your project.
+---
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## Autor ✍️
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+**Oscar Giovanni Castro Contreras**\
+Ingeniero en Informática
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+📧 [oscargiovanni.castro@gmail.com](mailto\:oscargiovanni.castro@gmail.com)\
+📱 +58 414 703 9597\
+🔗 [LinkedIn](https://www.linkedin.com/in/oscargiovanni)\
+<i class="fab fa-github"></i> [GitHub](https://github.com/oscargiovanni)
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
