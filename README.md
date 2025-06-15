@@ -63,7 +63,9 @@ Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), 
 ### Formato de Google Spreadsheets
 ![hoja de cálculo](assets/hoja.png)
 
-
+  - La primera ejecución requiere autorización de permisos de Google Apps Script para acceso a Gmail, Drive y Sheets.  
+  - Puede agregarse una página adicional como contraportada para contenido extra en el certificado (como temario o contenido programático).  
+  - Los datos de correos y códigos deben estar correctamente ingresados; la librería no verifica duplicados de registros.
 
 ---
 
@@ -181,10 +183,12 @@ Este proyecto se distribuye bajo una política de **doble licencia**:
 - 🗭 **MIT License**: Uso libre con restricciones mínimas.
 - 🔳 **GNU GPLv3**: Si redistribuyes el código, debe ser bajo esta misma licencia y con código fuente disponible.
 
-### 📌 ¿Cuál elegir?
+### 📌 ¿Qué significa esto?
 
-- Si lo integrarás en un proyecto cerrado, puedes usar la licencia **MIT**.
-- Si quieres que tu versión siga siendo software libre, usa **GPLv3**.
+Puedes elegir bajo cuál de estas dos licencias usar el proyecto:
+
+- Si quieres integrar este código en un proyecto cerrado, usa la **MIT**.
+- Si deseas que tu versión derivada siga siendo software libre, usa la **GPLv3**.
 
 ---
 
@@ -195,6 +199,6 @@ Ingeniero en Informática
 
 📧 [oscargiovanni.castro@gmail.com](mailto\:oscargiovanni.castro@gmail.com)\
 📱 +58 414 703 9597\
-🔗 [LinkedIn](https://www.linkedin.com/in/oscargiovanni)\
-🐙 [GitHub](https://github.com/oscargiovanni)
+🔗 [LinkedIn](https://www.linkedin.com/in/oscargiovannicastrocontreras/)\
+🐙 [GitHub](https://github.com/blythe91)
 
