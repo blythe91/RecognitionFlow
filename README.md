@@ -53,7 +53,7 @@ Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), 
 > Los marcadores deben estar escritos tal cual, incluyendo las llaves dobles `{{ }}`.\
 > Puedes incluir una segunda diapositiva como contraportada si deseas agregar contenido adicional como temarios o mensajes.
 
-> 📁 *Ejemplo de plantilla en la carpeta **`docs/`*
+<!-- > 📁 *Ejemplo de plantilla en la carpeta **`docs/`* -->
 
 ### Vista de la plantilla
 
