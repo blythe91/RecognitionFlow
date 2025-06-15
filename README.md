@@ -1,8 +1,8 @@
 # RecognitionFlow 🏅📜
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/blythe91/RecognitionFlow)
-
 <img src="assets/recognitionflow.jpeg" width="200" />
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/blythe91/RecognitionFlow)
 
 **RecognitionFlow** es una librería de Google Apps Script para la generación y envío masivo de **reconocimientos digitales** en formato PDF, a partir de una base de datos en Google Sheets y una plantilla de Google Slides.
 
