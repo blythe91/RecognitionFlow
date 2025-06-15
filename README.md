@@ -1,11 +1,14 @@
 # RecognitionFlow 🏅📜
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/blythe91/RecognitionFlow)
+
 <img src="assets/recognitionflow.jpeg" width="200" />
+
 **RecognitionFlow** es una librería de Google Apps Script para la generación y envío masivo de **reconocimientos digitales** en formato PDF, a partir de una base de datos en Google Sheets y una plantilla de Google Slides.
 
 Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), permite automatizar la entrega de diplomas de agradecimiento o Reconocimientos de participación, simplificando todo el proceso con opciones flexibles y una interfaz gráfica amigable.
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/blythe91/RecognitionFlow)
+
 
 ---
 
