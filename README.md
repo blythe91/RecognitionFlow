@@ -5,6 +5,8 @@
 
 Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), permite automatizar la entrega de diplomas de agradecimiento o Reconocimientos de participación, simplificando todo el proceso con opciones flexibles y una interfaz gráfica amigable.
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/blythe91/RecognitionFlow)
+
 ---
 
 ## Características principales ✨
