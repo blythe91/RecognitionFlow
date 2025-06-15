@@ -161,5 +161,5 @@ Ingeniero en Informática
 📧 [oscargiovanni.castro@gmail.com](mailto\:oscargiovanni.castro@gmail.com)\
 📱 +58 414 703 9597\
 🔗 [LinkedIn](https://www.linkedin.com/in/oscargiovanni)\
-<i class="fab fa-github"></i> [GitHub](https://github.com/oscargiovanni)
+🐙 [GitHub](https://github.com/oscargiovanni)
 
