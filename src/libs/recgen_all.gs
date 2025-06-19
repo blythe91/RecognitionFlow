@@ -30,6 +30,19 @@ function generarReconocimientos(sheet_Id, template_Id, folder_Id, batch_size) {
 
     for (let i = startIndex; i < endIndex; i++) {
       const row = data[i];
+
+      // Validación de datos esenciales
+      if (!row[1] || !row[3] || !row[6]) {
+        Logger.log(`❌ Fila ${i + 1} incompleta. Deteniendo proceso. Campos faltantes:`);
+        if (!row[1]) Logger.log("- Falta primer nombre");
+        if (!row[3]) Logger.log("- Falta primer apellido");
+        if (!row[6]) Logger.log("- Falta documento de identidad");
+
+        eliminarTrigger();
+        PropertiesService.getScriptProperties().deleteProperty("lastProcessedIndex");
+        PropertiesService.getScriptProperties().deleteProperty("totalCertificados");
+        return;
+      }
       const nombreCompleto = `${row[1]} ${row[2] || ""} ${row[3]} ${row[4] || ""}`.trim();
       const documentoIdentidad = (row[5] ? row[5] + " " : "") + row[6];
       const codigoCertificado = row[11];
