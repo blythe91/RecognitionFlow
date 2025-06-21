@@ -63,9 +63,23 @@ function generarReconocimientosPorFilas(filasCSV, sheet_Id, template_Id, folder_
 
       slide.replaceAllText("{{nombre-participante}}", nombreCompleto);
       slide.replaceAllText("{{di-participante}}", documentoIdentidad);
-      slide.replaceAllText("{{texto-reconocimiento}}", textoReconocimiento);
+
+      // slide.replaceAllText("{{texto-reconocimiento}}", textoReconocimiento);
+      
       slide.replaceAllText("{{texto-fecha}}", textoFecha);
       slide.replaceAllText("{{cod-certificado}}", codigoCertificado);
+
+      const shapes = slide.getShapes();
+      for (let j = 0; j < shapes.length; j++) {
+        const shape = shapes[j];
+        if (typeof shape.getText === "function") {
+          const text = shape.getText().asString();
+          if (text.includes("{{texto-reconocimiento}}")) {
+            insertarTextoFormateado(shape, "{{texto-reconocimiento}}", textoReconocimiento);
+            break;
+          }
+        }
+      }
 
       presentation.saveAndClose();
 
@@ -88,3 +102,38 @@ function generarReconocimientosPorFilas(filasCSV, sheet_Id, template_Id, folder_
     Logger.log("Error en generarReconocimientosPorFilas: " + e.toString());
   }
 }
+
+function insertarTextoFormateado(shape, marcador, contenido) {
+  const textRange = shape.getText();
+  const textoOriginal = textRange.asString();
+
+  if (!textoOriginal.includes(marcador)) return;
+
+  textRange.setText("");
+
+  // Este regex captura:
+  // 1. Grupo 1: marcadores (*, _, *_ o #)
+  // 2. Grupo 2: texto dentro de los marcadores
+  // 3. Grupo 3: cualquier otro texto plano
+  const regex = /(\*{1,2}_?|\_{1,2}\*?|#)([^\*_#]+?)\1|([^*_#]+)/g;
+  let match;
+  let cursor = 0;
+
+  while ((match = regex.exec(contenido)) !== null) {
+    const textoPlano = match[2] || match[3];
+    const formato = match[1] || "";
+
+    const appended = textRange.appendText(textoPlano);
+    const style = appended.getTextStyle();
+
+    // Evaluar formato
+    const bold = formato.includes("*") || formato === "#";
+    const italic = formato.includes("_") || formato === "#";
+
+    style.setBold(bold);
+    style.setItalic(italic);
+
+    cursor += textoPlano.length;
+  }
+}
+
