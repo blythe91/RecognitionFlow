@@ -79,8 +79,10 @@ Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), 
 1. Clona o descarga el repositorio en tu máquina local.
 2. Instala [clasp](https://github.com/google/clasp) y configura sus pre-requisitos (Node.js, npm).
 3. Ejecuta `clasp login` para conectar con tu cuenta Google.
+4. Crea un nuevo proyecto clasp con `clasp create --title "RecognitionFlow - Archivo Único" --type sheets`; lo que creará el .clasp.json indicando que el archivo es de tipo hoja de cálculo (sheets) y cuyo nombre sería "RecognitionFlow - Archivo Único"; puede tener cualquier nombre.
 4. Usa `clasp push` para subir el proyecto a tu entorno de Google Apps Script.
 5. Abre el Google Spreadsheet con tu base de datos: verás un nuevo menú **Reconocimientos**.
+6. renombrar la hoja de cálculo de "Hoja 1" a "data", indispensable para el funcionamiento de la librería.
 
 > *Nota:* Planeo publicar esta librería oficialmente para ser importada directamente.
 
