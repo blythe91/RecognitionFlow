@@ -84,7 +84,7 @@ Esta herramienta, basada en [CertiFlow](https://github.com/blythe91/certiflow), 
 5. Abre el Google Spreadsheet con tu base de datos: verás un nuevo menú **Reconocimientos**.
 6. renombrar la hoja de cálculo de "Hoja 1" a "data", indispensable para el funcionamiento de la librería.
 
-> *Nota:* Planeo publicar esta librería oficialmente para ser importada directamente.
+> *Nota:* El despliegue oficial de esta librería está previsto pronto.
 
 ---
 

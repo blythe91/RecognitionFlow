@@ -42,13 +42,14 @@ function generarReconocimientosPorFilas(filasCSV, sheet_Id, template_Id, folder_
       var segundoApellido = filaData[4];
       var prefijoDoc = filaData[5];
       var docIdentidad = filaData[6];
+      
       var textoReconocimiento = filaData[8];  // COL-I
       var textoFecha = filaData[9];           // COL-J
       var codigoCertificado = filaData[11];
 
       var nombreCompleto = primerNombre + " " + (segundoNombre || "") + " " + primerApellido + " " + (segundoApellido || "");
       nombreCompleto = nombreCompleto.trim();
-      var documentoIdentidad = (prefijoDoc ? prefijoDoc + " " : "") + docIdentidad;
+      const documentoIdentidad = (prefijoDoc ? prefijoDoc + " " : "") + formatearCedulaConPuntos(docIdentidad);
       var nombreCertificado = "Certificado_" + codigoCertificado + "_" + primerNombre + "_" + primerApellido + ".pdf";
 
       var archivos = folder.getFilesByName(nombreCertificado);
